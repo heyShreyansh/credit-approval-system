@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Credit Approval System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .method {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .method.post {
+            background: #007bff;
+        }
+
+        .method.get {
+            background: #28a745;
+        }
+
+        .url {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .fields {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+
+        .fields h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .field-list {
+            list-style: none;
+        }
+
+        .field-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .field-list li:last-child {
+            border-bottom: none;
+        }
+
+        .field-name {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .field-type {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 API Documentation</h1>
+            <p>Credit Approval System REST API</p>
+        </div>
+
+        <div class="content">
+            <a href="/dashboard/" class="back-btn">← Back to Dashboard</a>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="url">/register/</span>
+                </div>
+                <div class="description">Register a new customer in the system</div>
+                <div class="fields">
+                    <h4>Required Fields:</h4>
+                    <ul class="field-list">
+                        <li><span class="field-name">first_name</span> <span class="field-type">(string, max 100 chars)</span></li>
+                        <li><span class="field-name">last_name</span> <span class="field-type">(string, max 100 chars)</span></li>
+                        <li><span class="field-name">age</span> <span class="field-type">(integer, 18-100)</span></li>
+                        <li><span class="field-name">monthly_income</span> <span class="field-type">(decimal, max 10 lakhs)</span></li>
+                        <li><span class="field-name">phone_number</span> <span class="field-type">(string, 10-15 digits)</span></li>
+                    </ul>
+                </div>
+                <div class="example">
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "age": 30,
+  "monthly_income": 50000,
+  "phone_number": "1234567890"
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="url">/check-eligibility/</span>
+                </div>
+                <div class="description">Check if a customer is eligible for a loan</div>
+                <div class="fields">
+                    <h4>Required Fields:</h4>
+                    <ul class="field-list">
+                        <li><span class="field-name">customer_id</span> <span class="field-type">(integer)</span></li>
+                        <li><span class="field-name">loan_amount</span> <span class="field-type">(decimal, max 1 crore)</span></li>
+                        <li><span class="field-name">interest_rate</span> <span class="field-type">(decimal, 0-50%)</span></li>
+                        <li><span class="field-name">tenure</span> <span class="field-type">(integer, 1-360 months)</span></li>
+                    </ul>
+                </div>
+                <div class="example">
+{
+  "customer_id": 1,
+  "loan_amount": 100000,
+  "interest_rate": 12.0,
+  "tenure": 12
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    <span class="url">/create-loan/</span>
+                </div>
+                <div class="description">Create a new loan if the customer is eligible</div>
+                <div class="fields">
+                    <h4>Required Fields:</h4>
+                    <ul class="field-list">
+                        <li><span class="field-name">customer_id</span> <span class="field-type">(integer)</span></li>
+                        <li><span class="field-name">loan_amount</span> <span class="field-type">(decimal, max 1 crore)</span></li>
+                        <li><span class="field-name">interest_rate</span> <span class="field-type">(decimal, 0-50%)</span></li>
+                        <li><span class="field-name">tenure</span> <span class="field-type">(integer, 1-360 months)</span></li>
+                    </ul>
+                </div>
+                <div class="example">
+{
+  "customer_id": 1,
+  "loan_amount": 100000,
+  "interest_rate": 12.0,
+  "tenure": 12
+}
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">/view-loan/{loan_id}/</span>
+                </div>
+                <div class="description">View details of a specific loan</div>
+                <div class="fields">
+                    <h4>URL Parameters:</h4>
+                    <ul class="field-list">
+                        <li><span class="field-name">loan_id</span> <span class="field-type">(integer) - The ID of the loan to view</span></li>
+                    </ul>
+                </div>
+                <div class="example">
+GET /view-loan/1/
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">/view-loans/{customer_id}/</span>
+                </div>
+                <div class="description">View all active loans for a specific customer</div>
+                <div class="fields">
+                    <h4>URL Parameters:</h4>
+                    <ul class="field-list">
+                        <li><span class="field-name">customer_id</span> <span class="field-type">(integer) - The ID of the customer</span></li>
+                    </ul>
+                </div>
+                <div class="example">
+GET /view-loans/1/
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Approval System Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #2c3e50;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .result.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .result pre {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background: #28a745;
+        }
+
+        .status-offline {
+            background: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏦 Credit Approval System</h1>
+            <p>Complete Loan Management Dashboard</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('register')">Register Customer</button>
+            <button class="nav-tab" onclick="showTab('eligibility')">Check Eligibility</button>
+            <button class="nav-tab" onclick="showTab('create-loan')">Create Loan</button>
+            <button class="nav-tab" onclick="showTab('view-loans')">View Loans</button>
+            <button class="nav-tab" onclick="showTab('status')">System Status</button>
+        </div>
+
+        <!-- Register Customer Tab -->
+        <div id="register" class="tab-content active">
+            <h2>👤 Register New Customer</h2>
+            <form id="registerForm">
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="first_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="last_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age *</label>
+                            <input type="number" id="age" name="age" min="18" max="100" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="monthlyIncome">Monthly Income *</label>
+                            <input type="number" id="monthlyIncome" name="monthly_income" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number *</label>
+                            <input type="tel" id="phoneNumber" name="phone_number" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Register Customer</button>
+            </form>
+            <div id="registerResult"></div>
+        </div>
+
+        <!-- Check Eligibility Tab -->
+        <div id="eligibility" class="tab-content">
+            <h2>🔍 Check Loan Eligibility</h2>
+            <form id="eligibilityForm">
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="eligibilityCustomerId">Customer ID *</label>
+                            <input type="number" id="eligibilityCustomerId" name="customer_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loanAmount">Loan Amount *</label>
+                            <input type="number" id="loanAmount" name="loan_amount" step="0.01" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="interestRate">Interest Rate (%) *</label>
+                            <input type="number" id="interestRate" name="interest_rate" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tenure">Tenure (months) *</label>
+                            <input type="number" id="tenure" name="tenure" min="1" max="360" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Check Eligibility</button>
+            </form>
+            <div id="eligibilityResult"></div>
+        </div>
+
+        <!-- Create Loan Tab -->
+        <div id="create-loan" class="tab-content">
+            <h2>💰 Create New Loan</h2>
+            <form id="createLoanForm">
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="createCustomerId">Customer ID *</label>
+                            <input type="number" id="createCustomerId" name="customer_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="createLoanAmount">Loan Amount *</label>
+                            <input type="number" id="createLoanAmount" name="loan_amount" step="0.01" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="createInterestRate">Interest Rate (%) *</label>
+                            <input type="number" id="createInterestRate" name="interest_rate" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="createTenure">Tenure (months) *</label>
+                            <input type="number" id="createTenure" name="tenure" min="1" max="360" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Create Loan</button>
+            </form>
+            <div id="createLoanResult"></div>
+        </div>
+
+        <!-- View Loans Tab -->
+        <div id="view-loans" class="tab-content">
+            <h2>📋 View Customer Loans</h2>
+            <form id="viewLoansForm">
+                <div class="form-group">
+                    <label for="viewCustomerId">Customer ID *</label>
+                    <input type="number" id="viewCustomerId" name="customer_id" required>
+                </div>
+                <button type="submit" class="btn">View Loans</button>
+            </form>
+            <div id="viewLoansResult"></div>
+        </div>
+
+        <!-- System Status Tab -->
+        <div id="status" class="tab-content">
+            <h2>⚙️ System Status</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>🌐 Web Application</h3>
+                    <p><span class="status-indicator status-online"></span>Running on Port 8000</p>
+                    <p>API endpoints are active and responding</p>
+                </div>
+                <div class="card">
+                    <h3>🗄️ Database (PostgreSQL)</h3>
+                    <p><span class="status-indicator status-online"></span>Running on Port 5432</p>
+                    <p>Customer and loan data storage</p>
+                </div>
+                <div class="card">
+                    <h3>⚡ Redis Cache</h3>
+                    <p><span class="status-indicator status-online"></span>Running on Port 6379</p>
+                    <p>Background job processing</p>
+                </div>
+                <div class="card">
+                    <h3>👷 Background Worker</h3>
+                    <p><span class="status-indicator status-online"></span>Active</p>
+                    <p>Processing data ingestion tasks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function showResult(elementId, data, isError = false) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.innerHTML = `
+                <div class="result ${isError ? 'error' : ''}">
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>
+            `;
+        }
+
+        // Register Customer Form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showResult('registerResult', result, !response.ok);
+            } catch (error) {
+                showResult('registerResult', { error: error.message }, true);
+            }
+        });
+
+        // Check Eligibility Form
+        document.getElementById('eligibilityForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('/check-eligibility/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showResult('eligibilityResult', result, !response.ok);
+            } catch (error) {
+                showResult('eligibilityResult', { error: error.message }, true);
+            }
+        });
+
+        // Create Loan Form
+        document.getElementById('createLoanForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('/create-loan/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                showResult('createLoanResult', result, !response.ok);
+            } catch (error) {
+                showResult('createLoanResult', { error: error.message }, true);
+            }
+        });
+
+        // View Loans Form
+        document.getElementById('viewLoansForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const customerId = formData.get('customer_id');
+            
+            try {
+                const response = await fetch(`/view-loans/${customerId}/`);
+                const result = await response.json();
+                showResult('viewLoansResult', result, !response.ok);
+            } catch (error) {
+                showResult('viewLoansResult', { error: error.message }, true);
+            }
+        });
+    </script>
+</body>
+</html>
